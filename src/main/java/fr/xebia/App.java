@@ -1,49 +1,40 @@
 package fr.xebia;
 
-import org.glassfish.jersey.jackson.JacksonFeature;
+import java.util.Optional;
 
-import javax.ws.rs.client.Client;
-
-import static javax.ws.rs.client.ClientBuilder.newBuilder;
-import static javax.ws.rs.client.Entity.entity;
-import static javax.ws.rs.core.MediaType.APPLICATION_JSON_TYPE;
+import static java.lang.Long.parseLong;
+import static java.util.Optional.empty;
 
 public class App {
-    private final Client client;
-
-    public App() {
-        this.client = newBuilder().register(JacksonFeature.class).build();
-    }
-
     public static void main(String[] args) {
-        new App().startGame(6, "slemerdy@xebia.com");
+        new MemoryGame().startGame(readGridSize(args), readEmail(args), readDelay(args));
     }
 
-    void startGame(int gridSize, String email) {
-        register(email);
-
-        Grid grid = new Grid(gridSize);
-        int[][] coords = grid.getCardsToFlip();
-        GameResponse response = play(coords);
-        grid.update(coords, response);
-
-        System.out.format("message : %s%n", response.turn.message == null ? "empty" : response.turn.message);
+    private static long readGridSize(String[] args) {
+        return readLong(args, 0, 2);
     }
 
-    private void register(String email) {
-        client.target("http://localhost:3000")
-                .path("/scores/register")
-                .request()
-                .post(entity(email, APPLICATION_JSON_TYPE));
+    private static Optional<String> readEmail(String[] args) {
+        try {
+            if (args[1].length() > 0) {
+                return Optional.of(args[1]);
+            }
+        } catch (ArrayIndexOutOfBoundsException ignored) {
+        }
+        return empty();
     }
 
-    private GameResponse play(int[][] coords) {
-        System.out.format("/play [[%d, %d], [%d, %d]] ", coords[0][0], coords[0][1], coords[1][0], coords[1][1]);
-        GameResponse gameResponse = client.target("http://localhost:3000")
-                .path("/play")
-                .request()
-                .post(entity(coords, APPLICATION_JSON_TYPE), GameResponse.class);
-        System.out.format("%s%n", gameResponse);
-        return gameResponse;
+    private static long readDelay(String[] args) {
+        return readLong(args, 2, 0);
+    }
+
+    private static long readLong(String[] args, int index, long defaultValue) {
+        try {
+            return parseLong(args[index]);
+        } catch (ArrayIndexOutOfBoundsException e) {
+            return defaultValue;
+        } catch (NumberFormatException e) {
+            return defaultValue;
+        }
     }
 }
