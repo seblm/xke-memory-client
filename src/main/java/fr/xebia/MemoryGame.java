@@ -1,13 +1,11 @@
 package fr.xebia;
 
-import fr.xebia.engine.Grid;
 import org.glassfish.jersey.jackson.JacksonFeature;
 
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.client.Client;
 import java.util.Optional;
 
-import static java.util.stream.IntStream.range;
 import static javax.ws.rs.client.ClientBuilder.newBuilder;
 import static javax.ws.rs.client.Entity.entity;
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON_TYPE;
@@ -22,22 +20,14 @@ public class MemoryGame {
     void startGame(long gridSize, Optional<String> email, long secondsToWait) {
         System.out.format("start with grid size %d, registering %s and waiting %ds%n", gridSize, email.orElse("no email"), secondsToWait);
         email.ifPresent(this::register);
-        Grid grid = new Grid(gridSize);
         try {
-            while (true) {
-                long[][] coords = grid.getCardsToFlip();
-                GameResponse response = play(coords);
-                range(0, response.turn.cards.size()).forEach(i -> {
-                    Card card = response.turn.cards.get(i);
-                    grid.flipped(coords[i][0], coords[i][1], card.color + " " + card.symbol, card.found);
-                });
+            long[][] coords = new long[][]{new long[]{0, 0}, new long[]{0, 1}};
+            GameResponse response = play(coords);
 
-                System.out.format("message : %s%n", response.turn.message == null ? "empty" : response.turn.message);
-                System.out.println(grid);
+            System.out.format("message : %s%n", response.turn.message == null ? "empty" : response.turn.message);
 
-                if (secondsToWait > 0) {
-                    Thread.sleep(secondsToWait * 1000);
-                }
+            if (secondsToWait > 0) {
+                Thread.sleep(secondsToWait * 1000);
             }
         } catch (WebApplicationException e) {
             System.out.println(e.getResponse().readEntity(String.class));
