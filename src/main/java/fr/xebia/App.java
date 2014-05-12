@@ -31,9 +31,7 @@ public class App {
     private static long readLong(String[] args, int index, long defaultValue) {
         try {
             return parseLong(args[index]);
-        } catch (ArrayIndexOutOfBoundsException e) {
-            return defaultValue;
-        } catch (NumberFormatException e) {
+        } catch (ArrayIndexOutOfBoundsException | NumberFormatException e) {
             return defaultValue;
         }
     }
