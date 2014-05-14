@@ -5,9 +5,9 @@ import org.codehaus.jackson.annotate.JsonProperty;
 import static java.lang.String.format;
 
 public class Card {
-    private final String symbol;
-    private final String color;
-    private final boolean found;
+    public final String symbol;
+    public final String color;
+    public final boolean found;
 
     public Card(@JsonProperty("symbol") String symbol,
                 @JsonProperty("color") String color,

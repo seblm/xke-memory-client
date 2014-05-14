@@ -5,10 +5,10 @@ import org.codehaus.jackson.annotate.JsonProperty;
 import static java.lang.String.format;
 
 public class GameResponse {
-    private final int gameId;
-    private final double progress;
-    private final Turn turn;
-    private final int gameScore;
+    public final int gameId;
+    public final double progress;
+    public final Turn turn;
+    public final int gameScore;
 
     public GameResponse(@JsonProperty("gameId") int gameId,
                         @JsonProperty("progress") double progress,

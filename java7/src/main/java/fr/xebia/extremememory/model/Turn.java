@@ -7,9 +7,9 @@ import java.util.List;
 import static java.lang.String.format;
 
 public class Turn {
-    private final int turnScore;
-    private final List<Card> cards;
-    private final String message;
+    public final int turnScore;
+    public final List<Card> cards;
+    public final String message;
 
     public Turn(@JsonProperty("turnScore") int turnScore,
                 @JsonProperty("cards") List<Card> cards,
