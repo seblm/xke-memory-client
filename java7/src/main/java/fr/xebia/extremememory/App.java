@@ -1,10 +1,8 @@
 package fr.xebia.extremememory;
 
 import javax.ws.rs.WebApplicationException;
-import java.util.Optional;
 
 import static java.lang.Thread.sleep;
-import static java.util.Optional.empty;
 
 public class App {
     /**

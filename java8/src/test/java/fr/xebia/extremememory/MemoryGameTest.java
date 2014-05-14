@@ -1,6 +1,5 @@
 package fr.xebia.extremememory;
 
-import fr.xebia.extremememory.MemoryGame;
 import fr.xebia.extremememory.model.Card;
 import fr.xebia.extremememory.model.GameResponse;
 import fr.xebia.extremememory.model.Turn;
