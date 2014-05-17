@@ -35,8 +35,8 @@ public class Grid {
 
     long[][] getCardsToFlip(Random random) {
         return grid.stream()
-                .filter(card -> card.getValue() != null && !card.isFound())
-                .collect(groupingBy(Card::getValue))
+                .filter(Card::isKnownButNotFound)
+                .collect(groupingBy(Card::value))
                 .entrySet().stream()
                 .filter(entry -> entry.getValue().size() == 2)
                 .map(entry -> new long[][]{
@@ -48,19 +48,13 @@ public class Grid {
     }
 
     private long[][] findRandomCardsToFlip(Random random) {
-        List<long[]> cardsToFlip = grid.stream()
-                .filter(card -> !card.isFound() && card.getValue() == null)
+        return grid.stream()
+                .filter(Card::isUnknow)
                 .map(card -> card.coordinate.toArray())
-                .collect(toList());
-        if (cardsToFlip.size() == 0) {
-            return new long[0][0];
-        }
-        if (cardsToFlip.size() == 1) {
-            return new long[][]{cardsToFlip.remove(random.nextInt(cardsToFlip.size()))};
-        }
-        return new long[][]{
-                cardsToFlip.remove(random.nextInt(cardsToFlip.size())),
-                cardsToFlip.remove(random.nextInt(cardsToFlip.size()))};
+                .sorted((coord1, coord2) -> random.nextBoolean() ? -1 : 1)
+                .limit(2)
+                .collect(toList())
+                .toArray(new long[2][]);
     }
 
     @Override
@@ -78,7 +72,7 @@ public class Grid {
                     }
                     int length = maxLengthByColumn.get(card.coordinate.x).get().toString().length();
                     return formatter.format("%c[%" + (length == 0 ? "" : Integer.toString(length)) + "s]",
-                            card.getValue() == null ? '?' : card.isFound() ? '✓' : '⨯',
+                            card.value().map(value -> card.isFound() ? '✓' : '⨯').orElse('?'),
                             card.toString());
                 },
                 (a, b) -> a

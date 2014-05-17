@@ -62,12 +62,11 @@ public class GridTest {
     @Test
     public void should_tell_to_flip_random_cards() {
         Random random = mock(Random.class);
-        when(random.nextInt(eq(4))).thenReturn(0);
-        when(random.nextInt(eq(3))).thenReturn(0);
+        when(random.nextBoolean()).thenReturn(true, false, true, false, true, false);
         Grid grid = new Grid(2);
 
         long[][] coords = grid.getCardsToFlip(random);
 
-        assertThat(coords).containsExactly(new long[]{0, 0}, new long[]{1, 0});
+        assertThat(coords).containsExactly(new long[]{1, 0}, new long[]{1, 1});
     }
 }
