@@ -121,12 +121,4 @@ class GameTest extends FunSuite with Matchers {
 
 		result should have size 4
 	}
-
-	test("spike") {
-		var memory: Map[String, Set[String]] = Map("toto" -> Set("titi"))
-
-		memory += ("toto" -> memory.get("toto").map { value => value + "tata" }.getOrElse(Set("tata")))
-
-		println(memory.head)
-	}
 }

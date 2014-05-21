@@ -24,6 +24,8 @@ object Tools {
 		}
 	}
 
+	def sync[T](fThings: Future[T], duration: Duration = 2 seconds): T = result(fThings, duration)
+
 	private def parseSuccessResponse(response: Response): Validation[Nothing, Game] = {
 		import models.GameJsonFormat._
 
@@ -32,8 +34,6 @@ object Tools {
 			case JsError(errors) => throw new IllegalStateException(s"error when parsing server response - $errors")
 		}
 	}
-
-	def sync[T](fThings: Future[T], duration: Duration = 2 seconds): T = result(fThings, duration)
 }
 
 trait ServerResponse {

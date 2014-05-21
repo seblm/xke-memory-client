@@ -6,9 +6,7 @@ case class Card(symbol: String, color: String, found: Boolean) {
 	def ==(card: Card): Boolean = this.symbol == card.symbol && this.color == card.color
 }
 
-case class Coord(x: Int, y: Int) {
-	override def toString = s"[$x,$y]"
-}
+case class Coord(x: Int, y: Int) { override def toString = s"[$x,$y]" }
 
 object GameJsonFormat {
 	import play.api.libs.json.Json
