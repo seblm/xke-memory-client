@@ -1,2 +1,1 @@
-Please implement something into class `MemoryGame`. There is some bootstrap JUnit tests as well if you feel that TDD is
-much convenient to you.
+You can use `ClientApi` to interact with memory game.
